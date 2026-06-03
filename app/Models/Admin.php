@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Admin extends Model
+class Admin extends Authenticatable implements JWTSubject
 {
     protected $table = 'admin';
 
@@ -18,4 +19,21 @@ class Admin extends Model
     protected $hidden = [
         'admin_password',
     ];
+
+    // Wajib untuk JWT
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    // Supaya Auth guard bisa pakai kolom admin_password sebagai password
+    public function getAuthPassword()
+    {
+        return $this->admin_password;
+    }
 }
