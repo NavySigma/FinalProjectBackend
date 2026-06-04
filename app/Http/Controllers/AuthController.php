@@ -6,6 +6,7 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -65,7 +66,7 @@ class AuthController extends Controller
         }
 
         // Generate JWT token
-        $token = auth()->guard('api')->login($admin);
+        $token = auth('api')->login($admin);
 
         return response()->json([
             'success' => true,
@@ -77,7 +78,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        auth()->guard('api')->logout();
+        auth('api')->logout();
 
         return response()->json([
             'success' => true,
